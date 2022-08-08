@@ -71,6 +71,7 @@
   justify-content: center;
   flex-wrap: wrap;
   max-width: 800px;
+  flex-direction: column;
 }
 
 .card {
@@ -83,6 +84,9 @@
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
   max-width: 300px;
+  position: relative;
+  align-self: stretch;
+  list-style-type: none;
 }
 
 .card:hover,
@@ -108,10 +112,15 @@
   margin-left: 0.5rem;
 }
 
-@media (max-width: 600px) {
+@media (min-width: 600px) {
   .grid {
-    width: 100%;
-    flex-direction: column;
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid {
+    max-width: 1200px;
   }
 }
 
