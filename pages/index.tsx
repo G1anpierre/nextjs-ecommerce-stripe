@@ -4,6 +4,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import products from '../products/products.json'
 import {useCartContext} from '../hooks/cart'
+import Link from 'next/link'
 
 const Home: NextPage = () => {
   // const [cart, setCart] = useState<any>(defaultCart)
@@ -40,7 +41,7 @@ const Home: NextPage = () => {
         <ul className={styles.grid}>
           {products.products.map(product => (
             <li className={styles.card} key={product.id}>
-              <a href="https://nextjs.org/docs/features/typescript">
+              <Link href={`/products/${product.id}`}>
                 <Image
                   src={product.thumbnail}
                   alt={product.title}
@@ -49,7 +50,7 @@ const Home: NextPage = () => {
                   height={250}
                   className={styles.cardImage}
                 />
-              </a>
+              </Link>
               <h2>{product.title}</h2>
               <p>{product.description}</p>
               <button
