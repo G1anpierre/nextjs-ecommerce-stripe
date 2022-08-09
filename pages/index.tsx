@@ -3,78 +3,12 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import products from '../products/products.json'
-import {initiateCheckout} from '../lib/payments'
-import {useState} from 'react'
-
-const defaultCart = {
-  products: [],
-}
-
-const defaultCartInfo = {
-  products: {},
-}
+import {useCartContext} from '../hooks/cart'
 
 const Home: NextPage = () => {
-  const [cart, setCart] = useState<any>(defaultCart)
-  const [cartInfo, setCartInfo] = useState<any>(defaultCartInfo)
-
-  const addToCart = (product: any) => {
-    if (cart.products.find((p: any) => p.price === product.id)) {
-      const newCart = {...cart}
-      newCart.products = newCart.products.map((p: any) => {
-        if (p.price === product.id) {
-          p.quantity++
-        }
-        return p
-      })
-      setCart(newCart)
-    } else {
-      setCart({
-        ...cart,
-        products: [
-          ...cart.products,
-          {price: product.id, quantity: 1, pricePerItem: product.price},
-        ],
-      })
-    }
-  }
-
-  const subTotal = cart.products.reduce((acc: number, curr: any) => {
-    return acc + curr.pricePerItem * curr.quantity
-  }, 0)
-
-  const totalItems = cart.products.reduce((acc: number, curr: any) => {
-    return acc + curr.quantity
-  }, 0)
-
-  // AddToCartInfo is a function that adds the product to the cartInfo object
-  // and then sets the cartInfo object to the new cartInfo object
-  // *** This is a temporary solution until we have a real cart ***
-  const addToCartInfo = (product: any) => {
-    if (cartInfo.products[product.id]) {
-      const newCartInfo = {...cartInfo}
-      newCartInfo.products[product.id]++
-      setCartInfo(newCartInfo)
-    } else {
-      setCartInfo({
-        ...cartInfo,
-        products: {...cartInfo.products, [product.id]: 1},
-      })
-    }
-  }
-
-  const handleBuy = (products: any) => {
-    initiateCheckout({
-      lineItems: products.map((product: any) => ({
-        price: product.price,
-        quantity: product.quantity,
-      })),
-    })
-  }
-
-  // console.log('cartInfo', cartInfo)
-  console.log('subTotal', subTotal)
-  console.log('cart', cart)
+  // const [cart, setCart] = useState<any>(defaultCart)
+  // const {cart, addToCart, subTotal, totalItems, handleBuy} = useCart()
+  const {totalItems, subTotal, handleBuy, addToCart, cart} = useCartContext()
 
   return (
     <div className={styles.container}>
@@ -129,19 +63,6 @@ const Home: NextPage = () => {
           ))}
         </ul>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </div>
   )
 }
