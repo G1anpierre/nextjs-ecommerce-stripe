@@ -3,8 +3,79 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import products from '../products/products.json'
+import {initiateCheckout} from '../lib/payments'
+import {useState} from 'react'
+
+const defaultCart = {
+  products: [],
+}
+
+const defaultCartInfo = {
+  products: {},
+}
 
 const Home: NextPage = () => {
+  const [cart, setCart] = useState<any>(defaultCart)
+  const [cartInfo, setCartInfo] = useState<any>(defaultCartInfo)
+
+  const addToCart = (product: any) => {
+    if (cart.products.find((p: any) => p.price === product.id)) {
+      const newCart = {...cart}
+      newCart.products = newCart.products.map((p: any) => {
+        if (p.price === product.id) {
+          p.quantity++
+        }
+        return p
+      })
+      setCart(newCart)
+    } else {
+      setCart({
+        ...cart,
+        products: [
+          ...cart.products,
+          {price: product.id, quantity: 1, pricePerItem: product.price},
+        ],
+      })
+    }
+  }
+
+  const subTotal = cart.products.reduce((acc: number, curr: any) => {
+    return acc + curr.pricePerItem * curr.quantity
+  }, 0)
+
+  const totalItems = cart.products.reduce((acc: number, curr: any) => {
+    return acc + curr.quantity
+  }, 0)
+
+  // AddToCartInfo is a function that adds the product to the cartInfo object
+  // and then sets the cartInfo object to the new cartInfo object
+  // *** This is a temporary solution until we have a real cart ***
+  const addToCartInfo = (product: any) => {
+    if (cartInfo.products[product.id]) {
+      const newCartInfo = {...cartInfo}
+      newCartInfo.products[product.id]++
+      setCartInfo(newCartInfo)
+    } else {
+      setCartInfo({
+        ...cartInfo,
+        products: {...cartInfo.products, [product.id]: 1},
+      })
+    }
+  }
+
+  const handleBuy = (products: any) => {
+    initiateCheckout({
+      lineItems: products.map((product: any) => ({
+        price: product.price,
+        quantity: product.quantity,
+      })),
+    })
+  }
+
+  // console.log('cartInfo', cartInfo)
+  console.log('subTotal', subTotal)
+  console.log('cart', cart)
+
   return (
     <div className={styles.container}>
       <Head>
@@ -21,6 +92,16 @@ const Home: NextPage = () => {
         <p className={styles.description}>
           Stripe is a payment platform that enables anyone to collect money from
         </p>
+        <div className={styles.checkout}>
+          <div>Subtotal: {subTotal}</div>
+          <div>Total Items: {totalItems}</div>
+          <button
+            className={styles.button}
+            onClick={() => handleBuy(cart.products)}
+          >
+            Check Out
+          </button>
+        </div>
 
         <ul className={styles.grid}>
           {products.products.map(product => (
@@ -34,9 +115,16 @@ const Home: NextPage = () => {
                   height={250}
                   className={styles.cardImage}
                 />
-                <h2>{product.title}</h2>
-                <p>{product.description}</p>
               </a>
+              <h2>{product.title}</h2>
+              <p>{product.description}</p>
+              <button
+                className={styles.button}
+                // onClick={() => handleBuy(product)}
+                onClick={() => addToCart(product)}
+              >
+                Add To Cart
+              </button>
             </li>
           ))}
         </ul>

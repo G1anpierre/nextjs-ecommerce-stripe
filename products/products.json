@@ -1,7 +1,7 @@
 {
   "products": [
     {
-      "id": 1,
+      "id": "price_1LUc0FDNHWcPqzwVtZRVepHT",
       "title": "iPhone 9",
       "description": "An apple mobile which is nothing like apple",
       "price": 549,
@@ -20,7 +20,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "price_1LUc1lDNHWcPqzwVgUoZ1kA5",
       "title": "iPhone X",
       "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
       "price": 899,
@@ -38,7 +38,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": "price_1LUc4SDNHWcPqzwVf0Tyc86E",
       "title": "Samsung Universe 9",
       "description": "Samsung's new variant which goes beyond Galaxy to the Universe",
       "price": 1249,
@@ -51,7 +51,7 @@
       "images": ["https://dummyjson.com/image/i/products/3/1.jpg"]
     },
     {
-      "id": 4,
+      "id": "price_1LUc5JDNHWcPqzwVqjAMEsl8",
       "title": "OPPOF19",
       "description": "OPPO F19 is officially announced on April 2021.",
       "price": 280,
