@@ -6,6 +6,12 @@
   margin-bottom: 15px;
 }
 
+.cartButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 @media screen and (min-width: 768px) {
   .navbar {
     grid-auto-flow: column;

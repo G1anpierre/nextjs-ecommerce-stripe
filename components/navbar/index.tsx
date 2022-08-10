@@ -1,9 +1,9 @@
 import React from 'react'
 import stylesNav from './Navbar.module.css'
-import styles from '../../styles/Home.module.css'
 import {BsCart3} from 'react-icons/bs'
 import {useCartContext} from '../../hooks/cart'
 import {useRouter} from 'next/router'
+import Button from 'react-bootstrap/Button'
 import Link from 'next/link'
 
 export const Navbar = () => {
@@ -16,14 +16,14 @@ export const Navbar = () => {
         <Link href="/">E-Commerce</Link>
       </div>
       <div>
-        <button className={styles.button} onClick={() => router.push('/cart')}>
+        <Button variant="outline-dark" onClick={() => router.push('/cart')}>
           {' '}
-          <BsCart3 />
-          <div>
-            <span>Total items: {totalItems} </span>
-            <span>subTotal: {subTotal} </span>
+          <div className={stylesNav.cartButton}>
+            <BsCart3 />
+            <span>Total items: {totalItems}</span>
+            <span>subTotal: {subTotal}</span>
           </div>
-        </button>
+        </Button>
       </div>
     </div>
   )

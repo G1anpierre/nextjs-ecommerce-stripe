@@ -59,6 +59,14 @@ export const useCart = () => {
     }
   }
 
+  const deleteFromCart = (item: CartProductType) => {
+    const newCart = {...cart}
+    newCart.products = newCart.products.filter((p: CartProductType) => {
+      return p.price !== item.price
+    })
+    setCart(newCart)
+  }
+
   const updateQuantity = useCallback(
     (quantity: number, item: CartProductType) => {
       if (cart.products.find((p: CartProductType) => p.price === item.price)) {
@@ -93,16 +101,24 @@ export const useCart = () => {
     [cart.products],
   )
 
-  const handleBuy = (products: any) => {
+  const handleBuy = (products: CartProductType[]) => {
     initiateCheckout({
-      lineItems: products.map((product: any) => ({
+      lineItems: products.map((product: CartProductType) => ({
         price: product.price,
         quantity: product.quantity,
       })),
     })
   }
 
-  return {addToCart, subTotal, totalItems, cart, handleBuy, updateQuantity}
+  return {
+    addToCart,
+    deleteFromCart,
+    subTotal,
+    totalItems,
+    cart,
+    handleBuy,
+    updateQuantity,
+  }
 }
 
 // Context API
@@ -110,6 +126,7 @@ export const useCart = () => {
 type CartContextType = {
   cart: CartStateType
   addToCart: (product: ProductType) => void
+  deleteFromCart: (item: CartProductType) => void
   subTotal: number
   totalItems: number
   handleBuy: (products: any) => void

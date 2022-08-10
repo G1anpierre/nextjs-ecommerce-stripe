@@ -5,10 +5,12 @@ import {CartProductType, useCartContext} from '../../hooks/cart'
 import {BsCart3} from 'react-icons/bs'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {MemoizedInput} from '../../components/InputQuantity'
+import Button from 'react-bootstrap/Button'
 import {useCallback} from 'react'
 
 const Cart = () => {
-  const {subTotal, handleBuy, cart, updateQuantity} = useCartContext()
+  const {subTotal, handleBuy, cart, updateQuantity, deleteFromCart} =
+    useCartContext()
 
   const handleInputChange = useCallback(
     (quantity: number, item: CartProductType) => {
@@ -37,6 +39,7 @@ const Cart = () => {
                 <th>Quantity</th>
                 <th>Price per Item</th>
                 <th>Item Total</th>
+                <th>Delete Product</th>
               </tr>
             </thead>
             <tbody>
@@ -53,18 +56,23 @@ const Cart = () => {
                     </td>
                     <td>{item.pricePerItem}</td>
                     <td>{item.quantity * item.pricePerItem}</td>
+                    <td>
+                      <Button
+                        onClick={() => deleteFromCart(item)}
+                        variant="danger"
+                      >
+                        Delete
+                      </Button>
+                    </td>
                   </tr>
                 )
               })}
             </tbody>
           </Table>
           <div className={stylesCart.buttonContainer}>
-            <button
-              className={styles.button}
-              onClick={() => handleBuy(cart.products)}
-            >
+            <Button onClick={() => handleBuy(cart.products)} variant="success">
               Checkout / Subtotal: {subTotal}
-            </button>
+            </Button>
           </div>
         </div>
       ) : (
