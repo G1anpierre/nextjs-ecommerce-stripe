@@ -23,6 +23,7 @@ export type CartProductType = {
   quantity: number
   pricePerItem: number
   price: any
+  title?: string
 }
 
 type CartStateType = {
@@ -47,7 +48,12 @@ export const useCart = () => {
         ...cart,
         products: [
           ...cart.products,
-          {price: product.id, quantity: 1, pricePerItem: product.price},
+          {
+            price: product.id,
+            quantity: 1,
+            pricePerItem: product.price,
+            title: product.title,
+          },
         ],
       })
     }

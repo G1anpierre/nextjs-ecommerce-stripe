@@ -27,16 +27,6 @@ const Home: NextPage = () => {
         <p className={styles.description}>
           Stripe is a payment platform that enables anyone to collect money from
         </p>
-        <div className={styles.checkout}>
-          <div>Subtotal: {subTotal}</div>
-          <div>Total Items: {totalItems}</div>
-          <button
-            className={styles.button}
-            onClick={() => handleBuy(cart.products)}
-          >
-            Check Out
-          </button>
-        </div>
 
         <ul className={styles.grid}>
           {products.products.map(product => (

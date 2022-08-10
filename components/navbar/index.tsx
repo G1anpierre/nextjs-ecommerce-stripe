@@ -3,10 +3,12 @@ import stylesNav from './Navbar.module.css'
 import styles from '../../styles/Home.module.css'
 import {BsCart3} from 'react-icons/bs'
 import {useCartContext} from '../../hooks/cart'
+import {useRouter} from 'next/router'
 import Link from 'next/link'
 
 export const Navbar = () => {
-  const {totalItems, subTotal} = useCartContext()
+  const router = useRouter()
+  const {totalItems, subTotal, handleBuy, cart} = useCartContext()
 
   return (
     <div className={stylesNav.navbar}>
@@ -14,10 +16,9 @@ export const Navbar = () => {
         <Link href="/">E-Commerce</Link>
       </div>
       <div>
-        <button className={styles.button} onClick={() => {}}>
+        <button className={styles.button} onClick={() => router.push('/cart')}>
           {' '}
           <BsCart3 />
-          <span>Check Out: </span>
           <div>
             <span>Total items: {totalItems} </span>
             <span>subTotal: {subTotal} </span>

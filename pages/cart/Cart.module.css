@@ -1,0 +1,29 @@
+.titleContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.title {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.tableContainer {
+  height: 50vh;
+}
+
+.emptyCartContainer {
+  display: flex;
+  justify-content: center;
+  height: 50vh;
+  align-items: center;
+}
