@@ -8,7 +8,7 @@ import Link from 'next/link'
 
 export const Navbar = () => {
   const router = useRouter()
-  const {totalItems, subTotal, handleBuy, cart} = useCartContext()
+  const {totalItems, subTotal} = useCartContext()
 
   return (
     <div className={stylesNav.navbar}>

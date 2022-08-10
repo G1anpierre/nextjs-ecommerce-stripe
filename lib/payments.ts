@@ -13,5 +13,4 @@ export async function initiateCheckout({lineItems}: any) {
     successUrl: `${window.location.origin}?session_id={CHECKOUT_SESSION_ID}`,
     cancelUrl: window.location.origin,
   })
-  console.log('Checkout !')
 }

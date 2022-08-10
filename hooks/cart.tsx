@@ -1,4 +1,4 @@
-import {useState, createContext, useContext} from 'react'
+import {useState, createContext, useContext, useMemo, useCallback} from 'react'
 import {initiateCheckout} from '../lib/payments'
 
 const defaultCart = {
@@ -59,13 +59,39 @@ export const useCart = () => {
     }
   }
 
-  const subTotal = cart.products.reduce((acc: number, curr: any) => {
-    return acc + curr.pricePerItem * curr.quantity
-  }, 0)
+  const updateQuantity = useCallback(
+    (quantity: number, item: CartProductType) => {
+      if (cart.products.find((p: CartProductType) => p.price === item.price)) {
+        const newCart = {...cart}
+        newCart.products = newCart.products
+          .map((p: CartProductType) => {
+            if (p.price === item.price) {
+              p.quantity = Number(quantity)
+            }
+            return p
+          })
+          .filter((p: CartProductType) => p.quantity > 0)
+        setCart(newCart)
+      }
+    },
+    [cart],
+  )
 
-  const totalItems = cart.products.reduce((acc: number, curr: any) => {
-    return acc + curr.quantity
-  }, 0)
+  const subTotal = useMemo(
+    () =>
+      cart.products.reduce((acc: number, curr: any) => {
+        return acc + curr.pricePerItem * curr.quantity
+      }, 0),
+    [cart.products],
+  )
+
+  const totalItems = useMemo(
+    () =>
+      cart.products.reduce((acc: number, curr: any) => {
+        return acc + curr.quantity
+      }, 0),
+    [cart.products],
+  )
 
   const handleBuy = (products: any) => {
     initiateCheckout({
@@ -76,7 +102,7 @@ export const useCart = () => {
     })
   }
 
-  return {addToCart, subTotal, totalItems, cart, handleBuy}
+  return {addToCart, subTotal, totalItems, cart, handleBuy, updateQuantity}
 }
 
 // Context API
@@ -87,6 +113,7 @@ type CartContextType = {
   subTotal: number
   totalItems: number
   handleBuy: (products: any) => void
+  updateQuantity: (quantity: number, item: CartProductType) => void
 }
 
 const CartContext = createContext({} as CartContextType)

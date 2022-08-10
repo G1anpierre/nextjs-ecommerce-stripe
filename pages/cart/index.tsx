@@ -1,16 +1,21 @@
 import Table from 'react-bootstrap/Table'
 import styles from '../../styles/Home.module.css'
 import stylesCart from './Cart.module.css'
-import {useCartContext} from '../../hooks/cart'
+import {CartProductType, useCartContext} from '../../hooks/cart'
 import {BsCart3} from 'react-icons/bs'
 import 'bootstrap/dist/css/bootstrap.min.css'
-
-import React from 'react'
+import {MemoizedInput} from '../../components/InputQuantity'
+import {useCallback} from 'react'
 
 const Cart = () => {
-  const {subTotal, handleBuy, cart} = useCartContext()
+  const {subTotal, handleBuy, cart, updateQuantity} = useCartContext()
 
-  console.log('cart', cart.products.length)
+  const handleInputChange = useCallback(
+    (quantity: number, item: CartProductType) => {
+      updateQuantity(quantity, item)
+    },
+    [updateQuantity],
+  )
 
   return (
     <>
@@ -35,15 +40,22 @@ const Cart = () => {
               </tr>
             </thead>
             <tbody>
-              {cart.products.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.title}</td>
-                  <td>{item.quantity}</td>
-                  <td>{item.pricePerItem}</td>
-                  <td>{item.quantity * item.pricePerItem}</td>
-                </tr>
-              ))}
+              {cart.products.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.title}</td>
+                    <td>
+                      <MemoizedInput
+                        value={item.quantity}
+                        onChange={quantity => handleInputChange(quantity, item)}
+                      />
+                    </td>
+                    <td>{item.pricePerItem}</td>
+                    <td>{item.quantity * item.pricePerItem}</td>
+                  </tr>
+                )
+              })}
             </tbody>
           </Table>
           <div className={stylesCart.buttonContainer}>
